@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     std::string execution;  //!< string to accumulate the execution output
 
     /******************ADD YOUR VARIABLES HERE*************************/
-
+    int current_time = 0;
 
 
     /******************************************************************/
@@ -29,6 +29,25 @@ int main(int argc, char** argv) {
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
+        if(activity == "CPU"){
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", CPU Burst\n";
+            current_time += duration_intr;
+        }
+
+        else if (activity == "SYSCALL") {
+            auto [boiler, new_time] = intr_boilerplate(current_time, duration_intr, 10, vectors);
+            execution += boiler;
+            current_time = new_time;
+
+            execution += std::to_string(current_time) + ", 40, SYSCALL: run the ISR (device driver)\n";
+            current_time += 40;
+
+            execution += std::to_string(current_time) + ", " + std::to_string(delays[duration_intr]) + ", transfer data from device to memory\n";
+            current_time += delays[duration_intr];
+
+            execution += std::to_string(current_time) + ", 376, check for errors\n";
+            current_time += 376;
+        }
 
 
 
