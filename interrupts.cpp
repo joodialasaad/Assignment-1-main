@@ -37,17 +37,35 @@ int main(int argc, char** argv) {
         else if (activity == "SYSCALL") {
             auto [boiler, new_time] = intr_boilerplate(current_time, duration_intr, 10, vectors);
             execution += boiler;
+
+            execution += std::to_string(new_time) + ", " + std::to_string(40) + ", SYSCALL: run the ISR (device driver)\n";
+            new_time += 40;
+
+            // transfer data from device to memory
+            execution += std::to_string(new_time) + ", " + std::to_string(delays[duration_intr]) + ", transfer data from device to memory\n";
+            new_time += delays[duration_intr];
+
+            // check for errors
+            execution += std::to_string(new_time) + ", " + std::to_string(376) + ", check for errors\n";
+            new_time += 376;
+
             current_time = new_time;
-
-            execution += std::to_string(current_time) + ", 40, SYSCALL: run the ISR (device driver)\n";
-            current_time += 40;
-
-            execution += std::to_string(current_time) + ", " + std::to_string(delays[duration_intr]) + ", transfer data from device to memory\n";
-            current_time += delays[duration_intr];
-
-            execution += std::to_string(current_time) + ", 376, check for errors\n";
-            current_time += 376;
         }
+
+
+        else if (activity == "END_IO") {
+            auto [boiler, new_time] = intr_boilerplate(current_time, duration_intr, 10, vectors);
+            execution += boiler;
+            execution += std::to_string(new_time) + ", " + std::to_string(40) + ", ENDIO: run the ISR (device driver)\n";
+            new_time += 40;
+
+            // simulate checking device status
+            execution += std::to_string(new_time) + ", " + std::to_string(delays[duration_intr]) + ", check device status\n";
+            new_time += delays[duration_intr];
+
+            current_time = new_time;
+        }
+
 
 
 
