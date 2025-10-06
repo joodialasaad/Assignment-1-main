@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     std::string execution;  //!< string to accumulate the execution output
 
     /******************ADD YOUR VARIABLES HERE*************************/
-    int current_time = 0;
+    
 
 
     /******************************************************************/
