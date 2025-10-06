@@ -39,6 +39,30 @@ int main(int argc, char** argv) {
             // Step 2: context saved (10 ms)
             execution += std::to_string(current_time) + ", 10, context saved\n";
             current_time += 10;
+            // Step 3: find vector in memory (1 ms)
+char vectoraddr[10];
+std::snprintf(vectoraddr, sizeof(vectoraddr), "0x%04X",
+        ADDR_BASE + devnum * VECTOR_SIZE);
+execution += std::to_string(current_time) + ", 1, find vector " +
+        std::to_string(devnum) + " in memory position " + vectoraddr +
+        "\n";
+current_time += 1;
+// Step 4: load ISR address into the PC (1 ms).  Guard against
+// references beyond the provided vector array.
+std::string isr = (static_cast<std::size_t>(devnum) < vectors.size())
+? vectors.at(devnum)
+                : std::string("<unknown>");
+execution += std::to_string(current_time) + ", 1, load address " + isr +
+        " into the PC\n";
+current_time += 1;
+// Step 5: execute the ISR (40 ms)
+execution += std::to_string(current_time) + ", 40, execute ISR for device " +
+        std::to_string(devnum) + "\n";
+current_time += 40;
+// Step 6: return from interrupt (1 ms)
+execution += std::to_string(current_time) + ", 1, IRET - end interrupt service\n";
+current_time += 1;
+
 
 
 
