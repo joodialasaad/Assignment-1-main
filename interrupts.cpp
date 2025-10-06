@@ -62,9 +62,15 @@ current_time += 40;
 // Step 6: return from interrupt (1 ms)
 execution += std::to_string(current_time) + ", 1, IRET - end interrupt service\n";
 current_time += 1;
-
-
-
+ // Step 7: start device I/O.  The device latency is looked up from
+// the delays vector; if no entry exists, a default of zero is used.
+int io_time = 0;
+if (static_cast<std::size_t>(devnum) < delays.size()) {
+   io_time = delays.at(devnum);
+if (io_time < 0) {
+   io_time = 0;
+  }  
+}
 
 
 
