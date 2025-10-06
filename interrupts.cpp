@@ -20,6 +20,28 @@ int main(int argc, char** argv) {
 
     /******************ADD YOUR VARIABLES HERE*************************/
     int current_time = 0;
+      while (std::getline(inputfile, trace)) {
+        // Use parse_trace (not parsetrace)
+        auto [activity, duration_intr] = parse_trace(trace);
+
+        if (activity == "CPU") {
+            execution += std::to_string(current_time) + ", " +
+                         std::to_string(duration_intr) +
+                         ", CPU burst of " + std::to_string(duration_intr) + " ms\n";
+            current_time += duration_intr;
+        }
+        else if (activity == "SYSCALL") {
+            int devnum = duration_intr;
+            // Interrupt boilerplate steps using macros ADDR_BASE and VECTOR_SIZE
+            // Step 1: switch to kernel mode (1 ms)
+            execution += std::to_string(current_time) + ", 1, switch to kernel mode\n";
+            current_time += 1;
+            // Step 2: context saved (10 ms)
+            execution += std::to_string(current_time) + ", 10, context saved\n";
+            current_time += 10;
+
+
+
 
 
     /******************************************************************/
