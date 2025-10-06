@@ -35,7 +35,8 @@ int main(int argc, char** argv) {
         }
 
         else if (activity == "SYSCALL") {
-            auto [boiler, new_time] = intr_boilerplate(current_time, duration_intr, 10, vectors);
+            auto [boiler, new_time] = intr_boilerplate(current_time, duration_intr, 10, vectors); // runs the interrupt boilerplate to handle SYSCALL and update current time
+
             execution += boiler;
 
             execution += std::to_string(new_time) + ", " + std::to_string(40) + ", SYSCALL: run the ISR (device driver)\n";
